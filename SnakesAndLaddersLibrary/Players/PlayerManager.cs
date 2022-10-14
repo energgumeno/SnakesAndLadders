@@ -29,7 +29,8 @@ namespace SnakesAndLaddersLibrary.Players
 
             for (int playerId = 1; playerId <= PlayerCount; playerId++)
             {
-                var token = new Token(playerId, gameBoard, this.AnimationLogger);
+
+                var token = gameBoard.CreateToken(playerId);
                 await CreatePlayer(token, gameBoard, playerId);
             }
 

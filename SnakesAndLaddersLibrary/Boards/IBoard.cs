@@ -9,5 +9,6 @@ namespace SnakesAndLaddersLibrary.Boards
         Task FillTiles();
         int GetNextTokenPosition(int OldPosition, int spaces);
         bool IsTokenInLastPosition(int Position);
+        IToken CreateToken(int playerId);
     }
 }

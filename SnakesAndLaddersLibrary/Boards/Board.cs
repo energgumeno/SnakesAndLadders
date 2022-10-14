@@ -64,6 +64,11 @@ namespace SnakesAndLaddersLibrary.Boards
                 }
             });
         }
+
+        public IToken CreateToken(int playerId)
+        {
+            return new Token(playerId, this, this.AnimationLogger);
+        }
         #endregion
 
     }
