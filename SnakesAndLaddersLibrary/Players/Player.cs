@@ -4,14 +4,14 @@ using SnakesAndLaddersLibrary.Dices;
 
 namespace SnakesAndLaddersLibrary.Players
 {
-    public class Player
+    public class Player : IPlayer
     {
         public int PlayerId { get; protected set; }
-        public Token PlayerToken { get; protected set; }
+        public IToken PlayerToken { get; protected set; }
         protected IDice TheDice { get; set; }
         protected IAnimationLogger AnimationLogger { get; set; }
 
-        public Player(int playerId, Token playerToken, IDice theDice, IAnimationLogger animationLogger)
+        public Player(int playerId, IToken playerToken, IDice theDice, IAnimationLogger animationLogger)
         {
             this.PlayerToken = playerToken;
             this.PlayerId = playerId;
@@ -19,7 +19,7 @@ namespace SnakesAndLaddersLibrary.Players
             this.TheDice = theDice;
         }
 
-        internal async Task<int> RollDice()
+        public async Task<int> RollDice()
         {
             var diceRolled = TheDice.Roll();
             await ThrowsDiceAnimation(diceRolled);
@@ -41,9 +41,9 @@ namespace SnakesAndLaddersLibrary.Players
             });
         }
 
-        internal async Task Move(int spaces)
+        public async Task Move(int spaces)
         {
-           await PlayerToken.Move(spaces);
+            await PlayerToken.Move(spaces);
         }
 
         private async Task ThrowsDiceAnimation(int diceRolled)

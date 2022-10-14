@@ -9,10 +9,10 @@ namespace SnakesAndLaddersLibrary.Boards
         public IBoard GameBoard { get; protected set; }
         protected IAnimationLogger AnimationLogger { get; set; }
 
-        public Token(int tokenId, int position, IBoard gameBoard, IAnimationLogger animationLogger)
+        public Token(int tokenId,  IBoard gameBoard, IAnimationLogger animationLogger)
         {
             this.TokenId = tokenId;
-            this.Position = position;
+            this.Position = gameBoard.StartPosition;
             this.GameBoard = gameBoard;
             this.AnimationLogger = animationLogger;
         }

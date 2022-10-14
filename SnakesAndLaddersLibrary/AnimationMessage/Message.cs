@@ -1,6 +1,6 @@
 ﻿namespace SnakesAndLaddersLibrary.AnimationMessage
 {
-    public class Message
+    public class Message : IMessage
     {
         public string Sender { get; set; }
         public string Animation { get; set; }

@@ -5,9 +5,9 @@ namespace SnakesAndLaddersLibrary.Players
 {
     public interface IPlayerManager
     {
-        Task CreatePlayerList(Board gameBoard);
-        Player GetPlayer();
+        Task CreatePlayerList(IBoard gameBoard);
+        IPlayer GetPlayer();
         Task SetNextPlayer();
-        void CheckPlayers();
+        void CheckPlayersCount();
     }
 }

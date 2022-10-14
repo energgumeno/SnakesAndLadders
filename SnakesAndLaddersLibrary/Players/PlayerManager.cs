@@ -7,13 +7,13 @@ namespace SnakesAndLaddersLibrary.Players
     public class PlayerManager : IPlayerManager
     {
 
-        protected Player[] PlayerList { get; set; }
-        protected Player? CurrentPlayer { get; set; }
+        protected IPlayer[] PlayerList { get; set; }
+        protected IPlayer? CurrentPlayer { get; set; }
         protected int PlayerCount { get; }
         protected IAnimationLogger AnimationLogger { get; }
         public IDice TheDice { get; }
 
-        public Player GetPlayer() => CurrentPlayer;
+        public IPlayer GetPlayer() => CurrentPlayer;
         public PlayerManager(int playerCount, IDice theDice, IAnimationLogger animationLogger)
         {
             this.PlayerList = new Player[playerCount];
@@ -24,20 +24,21 @@ namespace SnakesAndLaddersLibrary.Players
 
         }
 
-        public async Task CreatePlayerList(Board gameBoard)
+        public async Task CreatePlayerList(IBoard gameBoard)
         {
-            List<Player> playerList = new List<Player>();
+
             for (int playerId = 1; playerId <= PlayerCount; playerId++)
             {
-                await CreatePlayer(gameBoard, playerList, playerId);
+                var token = new Token(playerId, gameBoard, this.AnimationLogger);
+                await CreatePlayer(token, gameBoard, playerId);
             }
-            this.PlayerList = playerList.ToArray();
+
         }
 
-        private async Task CreatePlayer(IBoard gameBoard, List<Player> playerList, int id)
+        private async Task CreatePlayer(IToken token, IBoard gameBoard, int id)
         {
-            var token = new Token(id, gameBoard.StartPosition, gameBoard, this.AnimationLogger);
-            playerList.Add(new Player(id, token, TheDice, this.AnimationLogger));
+
+            PlayerList[id - 1] = new Player(id, token, TheDice, this.AnimationLogger);
             await CrateNewPlayerAnimation(id);
         }
 
@@ -55,7 +56,7 @@ namespace SnakesAndLaddersLibrary.Players
         {
             await AnimationLogger.AnimationMessage(new Message
             {
-                Sender = nameof(PlayerManager).ToString(),
+                Sender = nameof(IPlayerManager).ToString(),
                 Animation = nameof(CreatePlayer).ToString(),
                 Values = new List<KeyValuePair<string, string>>() {
                     new KeyValuePair<string, string>("PlayerId",playerId.ToString())
@@ -68,7 +69,7 @@ namespace SnakesAndLaddersLibrary.Players
         {
             await AnimationLogger.AnimationMessage(new Message
             {
-                Sender = nameof(PlayerManager).ToString(),
+                Sender = nameof(IPlayerManager).ToString(),
                 Animation = nameof(SetNextPlayer).ToString(),
                 Values = new List<KeyValuePair<string, string>>() {
                     new KeyValuePair<string, string>("PlayerId",CurrentPlayer.PlayerId.ToString())
@@ -77,7 +78,7 @@ namespace SnakesAndLaddersLibrary.Players
             });
         }
 
-        public void CheckPlayers()
+        public void CheckPlayersCount()
         {
             if (PlayerCount <= 0)
             {

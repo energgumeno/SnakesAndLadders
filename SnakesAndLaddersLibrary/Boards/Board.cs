@@ -8,13 +8,16 @@ namespace SnakesAndLaddersLibrary.Boards
         public int StartPosition { get; }
 
         protected const int MaxTiles = 100;
-        protected List<Tile> TileList { get; set; }
+       
         protected IAnimationLogger AnimationLogger { get; set; }
+
+        protected ITile[] Tiles { get; set; }
+
 
         public Board(IAnimationLogger animationLogger)
         {
             this.StartPosition = 1;
-            this.TileList = new List<Tile>();
+            this.Tiles = new ITile[MaxTiles];
             this.AnimationLogger = animationLogger;
         }
 
@@ -22,7 +25,7 @@ namespace SnakesAndLaddersLibrary.Boards
         {
             for (int tilePosition = 1; tilePosition <= MaxTiles; tilePosition++)
             {
-                TileList.Add(new Tile(tilePosition));
+                Tiles[tilePosition-1]=new Tile(tilePosition);
                 await FillTilesAnimation(tilePosition);
             }
 
@@ -32,10 +35,12 @@ namespace SnakesAndLaddersLibrary.Boards
         {
             if (CanMoveTokenToNextPosition(OldPosition, spaces))
             {
-                return TileList.ElementAt(OldPosition + spaces - 1).GetNextPosition();
+                return Tiles.ElementAt(OldPosition + spaces - 1).GetNextPosition();
             }
             return OldPosition;
         }
+
+     
 
         public bool CanMoveTokenToNextPosition(int OldPosition, int spaces)
         {
@@ -52,7 +57,7 @@ namespace SnakesAndLaddersLibrary.Boards
         {
             await AnimationLogger.AnimationMessage(new Message
             {
-                Sender = nameof(Board).ToString(),
+                Sender = nameof(IBoard).ToString(),
                 Animation = nameof(FillTiles).ToString(),
                 Values = new List<KeyValuePair<string, string>>() {
                     new KeyValuePair<string, string>("TilePosition",tilePosition.ToString())
