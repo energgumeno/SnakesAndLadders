@@ -13,11 +13,11 @@ namespace SnakesAndLaddersLibrary.Games
    
         protected bool IsEndGame { get; set; }
 
-        public GameSnakesAndLadders(int playerCount, IAnimationLogger animationLogger)
+        public GameSnakesAndLadders(int playerCount, IAnimationLogger animationLogger,IPlayerManager playerManager, IBoard gameBoard)
         {
-            
-            this.GameBoard = new Board( animationLogger);
-            this.PlayerManager = new PlayerManager(playerCount, DiceSixSided.Singleton, animationLogger);
+
+            this.PlayerManager = playerManager;
+            this.GameBoard = gameBoard;
             this.IsEndGame = false;
         }
         
@@ -26,39 +26,40 @@ namespace SnakesAndLaddersLibrary.Games
         {
             PlayerManager.CheckPlayersCount();
             await GameBoard.FillTiles();
-      
             await PlayerManager.CreatePlayerList(GameBoard);
         }
 
         public async Task Play()
         {
-            IPlayer? currentPlayer;
-            await PlayerManager.SetNextPlayer();
-            while (true)
+            while (!IsEndGame)
             {
-                currentPlayer = PlayerManager.GetPlayer();
-                var spaces = await currentPlayer.RollDice();
-                await currentPlayer.Move(spaces);
-                if ( CheckForWinner(currentPlayer))
-                {
-                    break;
-                }
-                await PlayerManager.SetNextPlayer();
-
+                 await PlayOnemove();
             }
-            IsEndGame = false;
-            await currentPlayer.Gloat();
+
+            await PlayerManager.GetPlayer().Gloat();
            
 
         }
+
+        public async Task PlayOnemove()
+        {
+
+            await PlayerManager.SetNextPlayer();
+            IPlayer  currentPlayer = PlayerManager.GetPlayer();
+            var spaces = await currentPlayer.RollDice();
+            await currentPlayer.Move(spaces);
+            CheckForWinner();
+     
+        }
+
         public  IPlayer? GetWinner()
         {
             return IsEndGame ? PlayerManager.GetPlayer() : null;
         }
 
-        protected  bool CheckForWinner(IPlayer currentPlayer)
+        public bool CheckForWinner()
         {
-            return  this.GameBoard.IsTokenInLastPosition(currentPlayer.PlayerToken.Position);
+            return IsEndGame= this.GameBoard.IsTokenInLastPosition(PlayerManager.GetPlayer().PlayerToken.Position);
         }
 
 

@@ -38,9 +38,7 @@ namespace SnakesAndLaddersLibrary.Boards
                 return Tiles.ElementAt(OldPosition + spaces - 1).GetNextPosition();
             }
             return OldPosition;
-        }
-
-     
+        } 
 
         public bool CanMoveTokenToNextPosition(int OldPosition, int spaces)
         {
@@ -51,6 +49,12 @@ namespace SnakesAndLaddersLibrary.Boards
         {
             return Position == MaxTiles;
         }
+        public IToken CreateToken(int playerId)
+        {
+            //should be moved to factory 
+            return new Token(playerId, this, this.AnimationLogger);
+        }
+
 
         #region Animations
         private async Task FillTilesAnimation(int tilePosition)
@@ -65,10 +69,7 @@ namespace SnakesAndLaddersLibrary.Boards
             });
         }
 
-        public IToken CreateToken(int playerId)
-        {
-            return new Token(playerId, this, this.AnimationLogger);
-        }
+
         #endregion
 
     }

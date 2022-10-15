@@ -26,13 +26,18 @@ namespace SnakesAndLaddersLibrary.Players
 
             return diceRolled;
         }
+        public async Task Move(int spaces)
+        {
+            await PlayerToken.Move(spaces);
+        }
+
 
         #region Animations
         public virtual async Task Gloat()
         {
             await AnimationLogger.AnimationMessage(new Message
             {
-                Sender = nameof(Player).ToString(),
+                Sender = nameof(IPlayer).ToString(),
                 Animation = nameof(Gloat).ToString(),
                 Values = new List<KeyValuePair<string, string>>() {
                     new KeyValuePair<string, string>("PlayerId",PlayerId.ToString())
@@ -41,16 +46,12 @@ namespace SnakesAndLaddersLibrary.Players
             });
         }
 
-        public async Task Move(int spaces)
-        {
-            await PlayerToken.Move(spaces);
-        }
 
         private async Task ThrowsDiceAnimation(int diceRolled)
         {
             await AnimationLogger.AnimationMessage(new Message
             {
-                Sender = nameof(Player).ToString(),
+                Sender = nameof(IPlayer).ToString(),
                 Animation = nameof(RollDice).ToString(),
                 Values = new List<KeyValuePair<string, string>>() {
                     new KeyValuePair<string, string>("PlayerId",PlayerId.ToString()),

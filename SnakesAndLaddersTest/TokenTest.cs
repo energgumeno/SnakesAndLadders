@@ -27,19 +27,6 @@ namespace SnakesAndLaddersTest
             And the player has not won the game
 
 
-            US 3 - Moves Are Determined By Dice Rolls
-            As a player
-            I want to move my token based on the roll of a die
-            So that there is an element of chance in the game
-            UAT1
-
-            Given the game is started
-            When the player rolls a die
-            UAT2
-
-            Given the player rolls a 4
-            When they move their token
-            Then the token should move 4 spaces
      */
 
 

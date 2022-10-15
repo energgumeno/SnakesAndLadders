@@ -38,15 +38,16 @@ namespace SnakesAndLaddersTest
             Then the result should be between 1-6 inclusive 
         */
         [Test]
-        public void DiceToken_GameStarted_ReturnsSquare1() 
+        public void DiceToken_GameStarted_ReturnsSquare1()
         {
             IDice dice = DiceSixSided.Singleton;
 
-            Assert.GreaterOrEqual(1, dice.Roll());
-            Assert.LessOrEqual(6, dice.Roll());
+            Assert.GreaterOrEqual(dice.Roll(), 1);
+            Assert.LessOrEqual(dice.Roll(), 6);
 
         }
 
 
 
     }
+}

@@ -8,5 +8,6 @@ namespace SnakesAndLaddersLibrary.Games
         Task Play();
         Task StartGame();
         IPlayer? GetWinner();
+        bool CheckForWinner();
     }
 }

@@ -16,7 +16,7 @@ namespace SnakesAndLaddersLibrary.Players
         public IPlayer GetPlayer() => CurrentPlayer;
         public PlayerManager(int playerCount, IDice theDice, IAnimationLogger animationLogger)
         {
-            this.PlayerList = new Player[playerCount];
+            this.PlayerList = new IPlayer[playerCount];
             this.PlayerCount = playerCount;
             this.AnimationLogger = animationLogger;
             this.TheDice = theDice;
@@ -38,7 +38,7 @@ namespace SnakesAndLaddersLibrary.Players
 
         private async Task CreatePlayer(IToken token, IBoard gameBoard, int id)
         {
-
+            //should be moved to factory 
             PlayerList[id - 1] = new Player(id, token, TheDice, this.AnimationLogger);
             await CrateNewPlayerAnimation(id);
         }
