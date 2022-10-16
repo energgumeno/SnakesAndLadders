@@ -9,6 +9,8 @@ using SnakesAndLaddersLibrary.Players;
 
 int playerCount = 2;
 
+
+//recomended dependency injection
 IAnimationLogger logger = new DefaultAnimationLogger();
 ITileFactory tileFactory = new TileFactory();
 ITokenFactory tokenFactory = new TokenFactory();
