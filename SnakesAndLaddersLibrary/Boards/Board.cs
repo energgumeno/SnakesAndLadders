@@ -8,28 +8,34 @@ namespace SnakesAndLaddersLibrary.Boards
         public int StartPosition { get; }
 
         protected const int MaxTiles = 100;
-       
-        protected IAnimationLogger AnimationLogger { get; set; }
 
+        protected IAnimationLogger AnimationLogger { get; set; }
+        protected ITokenFactory TokenFactory { get; set; }
+        protected ITileFactory TileFactory { get; set; }
         protected ITile[] Tiles { get; set; }
 
 
-        public Board(IAnimationLogger animationLogger)
+        public Board(IAnimationLogger animationLogger, ITokenFactory tokenFactory, ITileFactory tileFactory)
         {
             this.StartPosition = 1;
             this.Tiles = new ITile[MaxTiles];
             this.AnimationLogger = animationLogger;
+            this.TokenFactory = tokenFactory;
+            this.TokenFactory = tokenFactory;
+            this.TileFactory = tileFactory;
         }
 
         public async Task FillTiles()
         {
             for (int tilePosition = 1; tilePosition <= MaxTiles; tilePosition++)
             {
-                Tiles[tilePosition-1]=new Tile(tilePosition);
+                Tiles[tilePosition - 1] = TileFactory.CreateTile(tilePosition);
                 await FillTilesAnimation(tilePosition);
             }
 
         }
+
+
 
         public int GetNextTokenPosition(int OldPosition, int spaces)
         {
@@ -38,7 +44,7 @@ namespace SnakesAndLaddersLibrary.Boards
                 return Tiles.ElementAt(OldPosition + spaces - 1).GetNextPosition();
             }
             return OldPosition;
-        } 
+        }
 
         public bool CanMoveTokenToNextPosition(int OldPosition, int spaces)
         {
@@ -51,10 +57,8 @@ namespace SnakesAndLaddersLibrary.Boards
         }
         public IToken CreateToken(int playerId)
         {
-            //should be moved to factory 
-            return new Token(playerId, this, this.AnimationLogger);
+            return TokenFactory.CreateToken(playerId, this, AnimationLogger);
         }
-
 
         #region Animations
         private async Task FillTilesAnimation(int tilePosition)

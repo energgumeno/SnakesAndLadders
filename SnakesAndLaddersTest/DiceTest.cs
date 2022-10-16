@@ -37,13 +37,22 @@ namespace SnakesAndLaddersTest
             When the player rolls a die
             Then the result should be between 1-6 inclusive 
         */
-        [Test]
-        public void DiceToken_GameStarted_ReturnsSquare1()
+        [TestCase(1)]
+        [TestCase(2)]
+        [TestCase(3)]
+        [TestCase(4)]
+        [TestCase(5)]
+        [TestCase(6)]
+        [TestCase(7)]
+        [TestCase(8)]
+        [TestCase(9)]
+        [TestCase(10)]
+        public void DiceToken_GameStarted_ResultBetween1and6(int numberTry)
         {
             IDice dice = DiceSixSided.Singleton;
-
-            Assert.GreaterOrEqual(dice.Roll(), 1);
-            Assert.LessOrEqual(dice.Roll(), 6);
+            var diceRoll = dice.Roll();
+            Assert.GreaterOrEqual(diceRoll, 1);
+            Assert.LessOrEqual(diceRoll, 6);
 
         }
 
