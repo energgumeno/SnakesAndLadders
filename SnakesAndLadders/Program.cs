@@ -1,13 +1,10 @@
-﻿
-
-using SnakesAndLaddersLibrary;
-using SnakesAndLaddersLibrary.AnimationMessage;
+﻿using SnakesAndLaddersLibrary.AnimationMessage;
 using SnakesAndLaddersLibrary.Boards;
 using SnakesAndLaddersLibrary.Dices;
 using SnakesAndLaddersLibrary.Games;
 using SnakesAndLaddersLibrary.Players;
 
-int playerCount = 2;
+var playerCount = 2;
 
 
 //recomended dependency injection
@@ -23,10 +20,10 @@ IGame game = new GameSnakesAndLadders(
     logger,
     playerManager,
     board
-    );
+);
 
 await game.StartGame();
 await game.Play();
-IPlayer? player=  game.GetWinner();
+var player = game.GetWinner();
 Console.WriteLine($"Player {player?.PlayerId} Won!");
 Console.ReadLine();

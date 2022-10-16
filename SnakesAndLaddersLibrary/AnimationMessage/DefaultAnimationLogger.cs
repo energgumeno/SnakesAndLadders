@@ -1,19 +1,16 @@
 ﻿using System.Text;
 
-namespace SnakesAndLaddersLibrary.AnimationMessage
+namespace SnakesAndLaddersLibrary.AnimationMessage;
+
+public class DefaultAnimationLogger : IAnimationLogger
 {
-    public class DefaultAnimationLogger : IAnimationLogger
+    public async Task AnimationMessage(IMessage message)
     {
-
-        public async Task AnimationMessage(IMessage message)
-        {
-            StringBuilder valuesToString = new StringBuilder();
-            valuesToString.AppendLine();
-            message.Values.ForEach(value => valuesToString.AppendLine($" <-- Key:'{value.Key}' Value:'{value.Value}' -->"));
-            Console.WriteLine($"Object: '{message.Sender}' Performed: '{message.Animation}' With values: {valuesToString.ToString()}");
-           await Task.Delay(10);
-        }
-
-
+        var valuesToString = new StringBuilder();
+        valuesToString.AppendLine();
+        message.Values.ForEach(value => valuesToString.AppendLine($" <-- Key:'{value.Key}' Value:'{value.Value}' -->"));
+        Console.WriteLine(
+            $"Object: '{message.Sender}' Performed: '{message.Animation}' With values: {valuesToString.ToString()}");
+        await Task.Delay(10);
     }
 }

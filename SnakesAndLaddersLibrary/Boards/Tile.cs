@@ -1,22 +1,21 @@
-﻿namespace SnakesAndLaddersLibrary.Boards
+﻿namespace SnakesAndLaddersLibrary.Boards;
+
+public class Tile : ITile
 {
-    public class Tile : ITile
+    public Tile(int position)
     {
-        public int Position { get; set; }
+        Position = position;
+    }
 
-        public Tile(int position)
-        {
-            Position = position;
-        }
+    public int Position { get; set; }
 
-        public int GetCurrentPosition()
-        {
-            return Position;
-        }
+    public int GetCurrentPosition()
+    {
+        return Position;
+    }
 
-        public int GetNextPosition()
-        {
-            return Position ;
-        }
+    public int GetNextPosition()
+    {
+        return Position;
     }
 }

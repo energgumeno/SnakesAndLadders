@@ -1,7 +1,6 @@
-﻿namespace SnakesAndLaddersLibrary.Dices
+﻿namespace SnakesAndLaddersLibrary.Dices;
+
+public interface IDice
 {
-    public interface IDice
-    {
-        int Roll();
-    }
+    int Roll();
 }

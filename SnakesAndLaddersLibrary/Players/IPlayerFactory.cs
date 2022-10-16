@@ -2,10 +2,9 @@
 using SnakesAndLaddersLibrary.Boards;
 using SnakesAndLaddersLibrary.Dices;
 
-namespace SnakesAndLaddersLibrary.Players
+namespace SnakesAndLaddersLibrary.Players;
+
+public interface IPlayerFactory
 {
-    public interface IPlayerFactory
-    {
-        IPlayer CreatePlayer(int playerId, IToken playerToken, IDice theDice, IAnimationLogger animationLogger);
-    }
+    IPlayer CreatePlayer(int playerId, IToken playerToken, IDice theDice, IAnimationLogger animationLogger);
 }

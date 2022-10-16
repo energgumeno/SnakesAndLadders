@@ -1,9 +1,7 @@
-﻿
-namespace SnakesAndLaddersLibrary.Boards
+﻿namespace SnakesAndLaddersLibrary.Boards;
+
+public interface ITile
 {
-    public interface ITile
-    {
-        int GetCurrentPosition();
-       int GetNextPosition();
-    }
+    int GetCurrentPosition();
+    int GetNextPosition();
 }

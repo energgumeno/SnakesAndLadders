@@ -2,64 +2,66 @@
 using SnakesAndLaddersLibrary.Boards;
 using SnakesAndLaddersLibrary.Dices;
 
-namespace SnakesAndLaddersLibrary.Players
+namespace SnakesAndLaddersLibrary.Players;
+
+public class Player : IPlayer
 {
-    public class Player : IPlayer
+    public Player(int playerId, IToken playerToken, IDice theDice, IAnimationLogger animationLogger)
     {
-        public int PlayerId { get; protected set; }
-        public IToken PlayerToken { get; protected set; }
-        protected IDice TheDice { get; set; }
-        protected IAnimationLogger AnimationLogger { get; set; }
-
-        public Player(int playerId, IToken playerToken, IDice theDice, IAnimationLogger animationLogger)
-        {
-            this.PlayerToken = playerToken;
-            this.PlayerId = playerId;
-            this.AnimationLogger = animationLogger;
-            this.TheDice = theDice;
-        }
-
-        public async Task<int> RollDice()
-        {
-            var diceRolled = TheDice.Roll();
-            await ThrowsDiceAnimation(diceRolled);
-
-            return diceRolled;
-        }
-        public async Task Move(int spaces)
-        {
-            await PlayerToken.Move(spaces);
-        }
-
-
-        #region Animations
-        public virtual async Task Gloat()
-        {
-            await AnimationLogger.AnimationMessage(new Message
-            {
-                Sender = nameof(IPlayer).ToString(),
-                Animation = nameof(Gloat).ToString(),
-                Values = new List<KeyValuePair<string, string>>() {
-                    new KeyValuePair<string, string>("PlayerId",PlayerId.ToString())
-
-                }
-            });
-        }
-
-
-        private async Task ThrowsDiceAnimation(int diceRolled)
-        {
-            await AnimationLogger.AnimationMessage(new Message
-            {
-                Sender = nameof(IPlayer).ToString(),
-                Animation = nameof(RollDice).ToString(),
-                Values = new List<KeyValuePair<string, string>>() {
-                    new KeyValuePair<string, string>("PlayerId",PlayerId.ToString()),
-                     new KeyValuePair<string, string>("diceRolled",diceRolled.ToString())
-
-                }
-            });
-        }
-        #endregion
+        PlayerToken = playerToken;
+        PlayerId = playerId;
+        AnimationLogger = animationLogger;
+        TheDice = theDice;
     }
+
+    protected IDice TheDice { get; set; }
+    protected IAnimationLogger AnimationLogger { get; set; }
+    public int PlayerId { get; protected set; }
+    public IToken PlayerToken { get; protected set; }
+
+    public async Task<int> RollDice()
+    {
+        var diceRolled = TheDice.Roll();
+        await ThrowsDiceAnimation(diceRolled);
+
+        return diceRolled;
+    }
+
+    public async Task Move(int spaces)
+    {
+        await PlayerToken.Move(spaces);
+    }
+
+
+    #region Animations
+
+    public virtual async Task Gloat()
+    {
+        await AnimationLogger.AnimationMessage(new Message
+        {
+            Sender = nameof(IPlayer),
+            Animation = nameof(Gloat),
+            Values = new List<KeyValuePair<string, string>>
+            {
+                new("PlayerId", PlayerId.ToString())
+            }
+        });
+    }
+
+
+    private async Task ThrowsDiceAnimation(int diceRolled)
+    {
+        await AnimationLogger.AnimationMessage(new Message
+        {
+            Sender = nameof(IPlayer),
+            Animation = nameof(RollDice),
+            Values = new List<KeyValuePair<string, string>>
+            {
+                new("PlayerId", PlayerId.ToString()),
+                new("diceRolled", diceRolled.ToString())
+            }
+        });
+    }
+
+    #endregion
 }

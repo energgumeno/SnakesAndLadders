@@ -1,13 +1,11 @@
-﻿
-using SnakesAndLaddersLibrary.Boards;
+﻿using SnakesAndLaddersLibrary.Boards;
 
-namespace SnakesAndLaddersLibrary.Players
+namespace SnakesAndLaddersLibrary.Players;
+
+public interface IPlayerManager
 {
-    public interface IPlayerManager
-    {
-        Task CreatePlayerList(IBoard gameBoard);
-        IPlayer GetPlayer();
-        Task SetNextPlayer();
-        void CheckPlayersCount();
-    }
+    Task CreatePlayerList(IBoard gameBoard);
+    IPlayer GetPlayer();
+    Task SetNextPlayer();
+    void CheckPlayersCount();
 }

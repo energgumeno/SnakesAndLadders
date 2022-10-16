@@ -2,13 +2,12 @@
 using SnakesAndLaddersLibrary.Boards;
 using SnakesAndLaddersLibrary.Dices;
 
-namespace SnakesAndLaddersLibrary.Players
+namespace SnakesAndLaddersLibrary.Players;
+
+public class PlayerFactory : IPlayerFactory
 {
-    public class PlayerFactory : IPlayerFactory
+    public IPlayer CreatePlayer(int playerId, IToken playerToken, IDice theDice, IAnimationLogger animationLogger)
     {
-        public IPlayer CreatePlayer(int playerId, IToken playerToken, IDice theDice, IAnimationLogger animationLogger)
-        {
-            return new Player(playerId, playerToken, theDice, animationLogger);
-        }
+        return new Player(playerId, playerToken, theDice, animationLogger);
     }
 }

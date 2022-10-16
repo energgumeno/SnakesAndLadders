@@ -1,14 +1,13 @@
 ﻿using SnakesAndLaddersLibrary.Boards;
 
-namespace SnakesAndLaddersLibrary.Players
-{
-    public interface IPlayer
-    {
-        int PlayerId { get; }
-        IToken PlayerToken { get; }
+namespace SnakesAndLaddersLibrary.Players;
 
-        Task Gloat();
-        Task Move(int spaces);
-        Task<int> RollDice();
-    }
+public interface IPlayer
+{
+    int PlayerId { get; }
+    IToken PlayerToken { get; }
+
+    Task Gloat();
+    Task Move(int spaces);
+    Task<int> RollDice();
 }

@@ -1,14 +1,12 @@
-﻿
-using SnakesAndLaddersLibrary.Players;
+﻿using SnakesAndLaddersLibrary.Players;
 
-namespace SnakesAndLaddersLibrary.Games
+namespace SnakesAndLaddersLibrary.Games;
+
+public interface IGame
 {
-    public interface IGame
-    {
-        Task Play();
-        Task StartGame();
-        IPlayer? GetWinner();
-        bool CheckForWinner();
-        Task PlayOnemove();
-    }
+    Task Play();
+    Task StartGame();
+    IPlayer? GetWinner();
+    bool CheckForWinner();
+    Task PlayOnemove();
 }

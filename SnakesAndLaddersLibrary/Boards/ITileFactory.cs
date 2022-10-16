@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace SnakesAndLaddersLibrary.Boards;
 
-namespace SnakesAndLaddersLibrary.Boards
+public interface ITileFactory
 {
-    public interface ITileFactory
-    {
-        ITile CreateTile(int tilePosition);
-    }
+    ITile CreateTile(int tilePosition);
 }

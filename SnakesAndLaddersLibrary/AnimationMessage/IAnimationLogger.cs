@@ -1,8 +1,6 @@
-﻿
-namespace SnakesAndLaddersLibrary.AnimationMessage
+﻿namespace SnakesAndLaddersLibrary.AnimationMessage;
+
+public interface IAnimationLogger
 {
-    public interface IAnimationLogger
-    {
-        Task AnimationMessage(IMessage message);
-    }
+    Task AnimationMessage(IMessage message);
 }

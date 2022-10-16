@@ -1,9 +1,8 @@
 ﻿using SnakesAndLaddersLibrary.AnimationMessage;
 
-namespace SnakesAndLaddersLibrary.Boards
+namespace SnakesAndLaddersLibrary.Boards;
+
+public interface ITokenFactory
 {
-    public interface ITokenFactory
-    {
-        IToken CreateToken(int playerId, IBoard board, IAnimationLogger animationLogger);
-    }
+    IToken CreateToken(int playerId, IBoard board, IAnimationLogger animationLogger);
 }
