@@ -2,7 +2,7 @@
 
 namespace SnakesAndLaddersLibrary.AnimationMessage
 {
-    public class AnimationLogger : IAnimationLogger
+    public class DefaultAnimationLoggerWithStop : IAnimationLogger
     {
 
         public async Task AnimationMessage(IMessage message)
@@ -11,7 +11,12 @@ namespace SnakesAndLaddersLibrary.AnimationMessage
             valuesToString.AppendLine();
             message.Values.ForEach(value => valuesToString.AppendLine($" <-- Key:'{value.Key}' Value:'{value.Value}' -->"));
             Console.WriteLine($"Object: '{message.Sender}' Performed: '{message.Animation}' With values: {valuesToString.ToString()}");
-           await Task.Delay(10);
+            await Task.Delay(10);
+            if (message.Animation == "SetNextPlayer") 
+            {
+                Console.ReadLine();
+            
+            }
         }
 
 

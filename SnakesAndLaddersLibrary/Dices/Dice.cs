@@ -13,12 +13,10 @@ namespace SnakesAndLaddersLibrary.Dices
             RandomNumber = new Random(DateTime.Now.Millisecond);
             this.MinValue = minValue;
             this.MaxValue = maxValue;
-       
         }
 
         public  int Roll()
         {
-
             return RandomNumber.Next(MinValue, MaxValue);
         }
     }

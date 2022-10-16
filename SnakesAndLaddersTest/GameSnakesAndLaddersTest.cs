@@ -52,12 +52,12 @@ namespace SnakesAndLaddersTest
             Board = BoardMock.Object;
         }
 
-        private (IPlayerManager?, IPlayer?) CreatePlayerTest(int rollResult)
+        private (IPlayerManager, IPlayer) CreatePlayerTest(int rollResult)
         {
             int position = 97;
-            IToken? PlayerToken;
-            IPlayer? Player;
-            IPlayerManager? PlayerManager;
+            IToken PlayerToken;
+            IPlayer Player;
+            IPlayerManager PlayerManager;
 
 
             var playerTokenMock = new Mock<IToken>();
@@ -106,10 +106,12 @@ namespace SnakesAndLaddersTest
         [Test]
         public async Task GameSnakesAndLadders_square97moved3_ReturnsWin()
         {
-            (IPlayerManager? playerManager, IPlayer player) = CreatePlayerTest(3);
+            (IPlayerManager playerManager, IPlayer player) = CreatePlayerTest(3);
 
 
+#pragma warning disable CS8604 // Possible null reference argument.
             IGame test = new GameSnakesAndLadders(1, AnimationLogger, playerManager, Board);
+#pragma warning restore CS8604 // Possible null reference argument.
 
             await test.StartGame();
             await test.PlayOnemove();
@@ -131,10 +133,12 @@ namespace SnakesAndLaddersTest
         public async Task GameSnakesAndLadders_square97moved3_ReturnsNoWin()
         {
 
-            (IPlayerManager? playerManager, IPlayer player) = CreatePlayerTest(4);
+            (IPlayerManager playerManager, IPlayer player) = CreatePlayerTest(4);
 
 
+#pragma warning disable CS8604 // Possible null reference argument.
             IGame test = new GameSnakesAndLadders(1, AnimationLogger, playerManager, Board);
+#pragma warning restore CS8604 // Possible null reference argument.
 
             await test.StartGame();
             await test.PlayOnemove();

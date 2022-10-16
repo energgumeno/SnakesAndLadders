@@ -8,7 +8,6 @@ namespace SnakesAndLaddersLibrary.Boards
         public int StartPosition { get; }
 
         protected const int MaxTiles = 100;
-
         protected IAnimationLogger AnimationLogger { get; set; }
         protected ITokenFactory TokenFactory { get; set; }
         protected ITileFactory TileFactory { get; set; }
@@ -34,8 +33,6 @@ namespace SnakesAndLaddersLibrary.Boards
             }
 
         }
-
-
 
         public int GetNextTokenPosition(int OldPosition, int spaces)
         {

@@ -15,10 +15,11 @@ namespace SnakesAndLaddersTest
     [TestFixture]
     public class PlayerTest
     {
-
-        IToken PlayerToken { get; set; }
-        IDice TheDice { get; set; }
-        IAnimationLogger AnimationLogger { get; set; }
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+        protected IToken PlayerToken { get; set; }
+        protected IDice TheDice { get; set; }
+        protected IAnimationLogger AnimationLogger { get; set; }
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         int position = 1;
         [SetUp]
         public void Setup()
@@ -35,17 +36,17 @@ namespace SnakesAndLaddersTest
             playerTokenMock.Setup(d => d.Position).Returns(()=>
             {
                 return position;
-            }
-                );
+            });
+            PlayerToken = playerTokenMock.Object;
 
             var theDiceMock = new Mock<IDice>();
             theDiceMock.Setup(d => d.Roll()).Returns(4);
+            TheDice = theDiceMock.Object;
 
             var AnimationLoggerMock = new Mock<IAnimationLogger>();
-
-            PlayerToken = playerTokenMock.Object;
-            TheDice = theDiceMock.Object;
             AnimationLogger = AnimationLoggerMock.Object;
+
+
 
         }
         /*

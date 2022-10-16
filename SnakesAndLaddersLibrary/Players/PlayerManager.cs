@@ -6,42 +6,44 @@ namespace SnakesAndLaddersLibrary.Players
 {
     public class PlayerManager : IPlayerManager
     {
+        public IDice TheDice { get; }
+        protected IAnimationLogger AnimationLogger { get; }
+        public IPlayerFactory PlayerFactory { get; }
 
+        protected int PlayerCount { get; }
         protected IPlayer[] PlayerList { get; set; }
         protected IPlayer? CurrentPlayer { get; set; }
-        protected int PlayerCount { get; }
-        protected IAnimationLogger AnimationLogger { get; }
-        public IDice TheDice { get; }
-
         public IPlayer GetPlayer() => CurrentPlayer;
-        public PlayerManager(int playerCount, IDice theDice, IAnimationLogger animationLogger)
+
+        public PlayerManager(int playerCount, IDice theDice, IAnimationLogger animationLogger, IPlayerFactory playerFactory)
         {
-            this.PlayerList = new IPlayer[playerCount];
+
+            this.TheDice = theDice;
             this.PlayerCount = playerCount;
             this.AnimationLogger = animationLogger;
-            this.TheDice = theDice;
+            this.PlayerFactory = playerFactory;
+
+            this.PlayerList = new IPlayer[playerCount];
             this.CurrentPlayer = null;
 
         }
 
         public async Task CreatePlayerList(IBoard gameBoard)
         {
-
             for (int playerId = 1; playerId <= PlayerCount; playerId++)
             {
-
-                var token = gameBoard.CreateToken(playerId);
+                IToken? token = gameBoard.CreateToken(playerId);
                 await CreatePlayer(token, gameBoard, playerId);
             }
-
         }
 
-        private async Task CreatePlayer(IToken token, IBoard gameBoard, int id)
+        private async Task CreatePlayer(IToken token, IBoard gameBoard, int playerId)
         {
-            //should be moved to factory 
-            PlayerList[id - 1] = new Player(id, token, TheDice, this.AnimationLogger);
-            await CrateNewPlayerAnimation(id);
+            PlayerList[playerId - 1] = PlayerFactory.CreatePlayer(playerId, token, TheDice, AnimationLogger);
+            await CrateNewPlayerAnimation(playerId);
         }
+
+
 
         public async Task SetNextPlayer()
         {
@@ -73,7 +75,7 @@ namespace SnakesAndLaddersLibrary.Players
                 Sender = nameof(IPlayerManager).ToString(),
                 Animation = nameof(SetNextPlayer).ToString(),
                 Values = new List<KeyValuePair<string, string>>() {
-                    new KeyValuePair<string, string>("PlayerId",CurrentPlayer.PlayerId.ToString())
+                    new KeyValuePair<string, string>("PlayerId",CurrentPlayer?.PlayerId.ToString()??string.Empty)
 
                 }
             });
