@@ -5,7 +5,7 @@ namespace SnakesAndLaddersLibrary.Players;
 public interface IPlayerManager
 {
     Task CreatePlayerList(IBoard gameBoard);
-    IPlayer GetPlayer();
+    IPlayer? GetPlayer();
     Task SetNextPlayer();
     void CheckPlayersCount();
 }

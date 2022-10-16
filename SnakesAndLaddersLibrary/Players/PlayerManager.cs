@@ -6,7 +6,7 @@ namespace SnakesAndLaddersLibrary.Players;
 
 public class PlayerManager : IPlayerManager
 {
-    public PlayerManager(int playerCount, IDice theDice, IAnimationLogger animationLogger, IPlayerFactory playerFactory)
+    public PlayerManager(int playerCount, IDice? theDice, IAnimationLogger? animationLogger, IPlayerFactory playerFactory)
     {
         TheDice = theDice;
         PlayerCount = playerCount;
@@ -17,15 +17,15 @@ public class PlayerManager : IPlayerManager
         CurrentPlayer = null;
     }
 
-    public IDice TheDice { get; }
-    protected IAnimationLogger AnimationLogger { get; }
-    public IPlayerFactory PlayerFactory { get; }
+    private IDice? TheDice { get; }
+    private IAnimationLogger? AnimationLogger { get; }
+    private IPlayerFactory PlayerFactory { get; }
 
-    protected int PlayerCount { get; }
-    protected IPlayer[] PlayerList { get; set; }
-    protected IPlayer? CurrentPlayer { get; set; }
+    private int PlayerCount { get; }
+    private IPlayer[] PlayerList { get; set; }
+    private IPlayer? CurrentPlayer { get; set; }
 
-    public IPlayer GetPlayer()
+    public IPlayer? GetPlayer()
     {
         return CurrentPlayer;
     }
@@ -47,7 +47,7 @@ public class PlayerManager : IPlayerManager
         await NextPlayerAnimation();
     }
 
-    private async Task CreatePlayer(IToken token, IBoard gameBoard, int playerId)
+    private async Task CreatePlayer(IToken? token, IBoard gameBoard, int playerId)
     {
         PlayerList[playerId - 1] = PlayerFactory.CreatePlayer(playerId, token, TheDice, AnimationLogger);
         await CrateNewPlayerAnimation(playerId);
@@ -57,7 +57,7 @@ public class PlayerManager : IPlayerManager
 
     private async Task CrateNewPlayerAnimation(int playerId)
     {
-        await AnimationLogger.AnimationMessage(new Message
+        await AnimationLogger!.AnimationMessage(new Message
         {
             Sender = nameof(IPlayerManager),
             Animation = nameof(CreatePlayer),
@@ -70,7 +70,7 @@ public class PlayerManager : IPlayerManager
 
     private async Task NextPlayerAnimation()
     {
-        await AnimationLogger.AnimationMessage(new Message
+        await AnimationLogger!.AnimationMessage(new Message
         {
             Sender = nameof(IPlayerManager),
             Animation = nameof(SetNextPlayer),

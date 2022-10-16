@@ -8,5 +8,5 @@ public interface IGame
     Task StartGame();
     IPlayer? GetWinner();
     bool CheckForWinner();
-    Task PlayOnemove();
+    Task PlayOneMove();
 }

@@ -6,7 +6,7 @@ namespace SnakesAndLaddersLibrary.Players;
 
 public class Player : IPlayer
 {
-    public Player(int playerId, IToken playerToken, IDice theDice, IAnimationLogger animationLogger)
+    public Player(int playerId, IToken? playerToken, IDice? theDice, IAnimationLogger? animationLogger)
     {
         PlayerToken = playerToken;
         PlayerId = playerId;
@@ -14,14 +14,14 @@ public class Player : IPlayer
         TheDice = theDice;
     }
 
-    protected IDice TheDice { get; set; }
-    protected IAnimationLogger AnimationLogger { get; set; }
+    private IDice? TheDice { get; set; }
+    private IAnimationLogger? AnimationLogger { get; set; }
     public int PlayerId { get; protected set; }
-    public IToken PlayerToken { get; protected set; }
+    public IToken? PlayerToken { get; protected set; }
 
     public async Task<int> RollDice()
     {
-        var diceRolled = TheDice.Roll();
+        var diceRolled = TheDice!.Roll();
         await ThrowsDiceAnimation(diceRolled);
 
         return diceRolled;
@@ -29,7 +29,7 @@ public class Player : IPlayer
 
     public async Task Move(int spaces)
     {
-        await PlayerToken.Move(spaces);
+        await PlayerToken!.Move(spaces);
     }
 
 
@@ -37,7 +37,7 @@ public class Player : IPlayer
 
     public virtual async Task Gloat()
     {
-        await AnimationLogger.AnimationMessage(new Message
+        await AnimationLogger!.AnimationMessage(new Message
         {
             Sender = nameof(IPlayer),
             Animation = nameof(Gloat),
@@ -51,7 +51,7 @@ public class Player : IPlayer
 
     private async Task ThrowsDiceAnimation(int diceRolled)
     {
-        await AnimationLogger.AnimationMessage(new Message
+        await AnimationLogger!.AnimationMessage(new Message
         {
             Sender = nameof(IPlayer),
             Animation = nameof(RollDice),

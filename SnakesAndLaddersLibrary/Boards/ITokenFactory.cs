@@ -4,5 +4,5 @@ namespace SnakesAndLaddersLibrary.Boards;
 
 public interface ITokenFactory
 {
-    IToken CreateToken(int playerId, IBoard board, IAnimationLogger animationLogger);
+    IToken? CreateToken(int playerId, IBoard board, IAnimationLogger? animationLogger);
 }

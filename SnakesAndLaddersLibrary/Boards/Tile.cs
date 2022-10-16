@@ -7,7 +7,7 @@ public class Tile : ITile
         Position = position;
     }
 
-    public int Position { get; set; }
+    private int Position { get;  }
 
     public int GetCurrentPosition()
     {

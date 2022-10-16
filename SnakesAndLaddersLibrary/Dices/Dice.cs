@@ -9,8 +9,8 @@ public class Dice : IDice
         MaxValue = maxValue;
     }
 
-    protected int MinValue { get; set; }
-    protected int MaxValue { get; set; }
+    private int MinValue { get; set; }
+    private int MaxValue { get; set; }
     private Random RandomNumber { get; }
 
     public int Roll()

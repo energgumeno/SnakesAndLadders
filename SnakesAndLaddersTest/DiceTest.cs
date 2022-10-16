@@ -43,8 +43,8 @@ public class DiceTest
     [TestCase(10)]
     public void DiceToken_GameStarted_ResultBetween1and6(int numberTry)
     {
-        IDice dice = DiceSixSided.Singleton;
-        var diceRoll = dice.Roll();
+        IDice? dice = DiceSixSided.Singleton;
+        var diceRoll = dice!.Roll();
         Assert.GreaterOrEqual(diceRoll, 1);
         Assert.LessOrEqual(diceRoll, 6);
     }

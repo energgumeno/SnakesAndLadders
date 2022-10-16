@@ -17,15 +17,15 @@ public class TokenTest
     [SetUp]
     public void Setup()
     {
-        var animationMock = new Mock<IAnimationLogger>();
-        animationMock.Setup(s => s.AnimationMessage(It.IsAny<Message>()));
+        var animationMock = new Mock<IAnimationLogger?>();
+        animationMock.Setup(animationLogger => animationLogger!.AnimationMessage(It.IsAny<Message>()));
         AnimationLogger = animationMock.Object;
 
         var boardMock = new Mock<IBoard>();
         boardMock.Setup(s => s.StartPosition).Returns(1);
         boardMock.Setup(s => s.CanMoveTokenToNextPosition(It.IsAny<int>(), It.IsAny<int>())).Returns(true);
         boardMock.Setup(s => s.GetNextTokenPosition(It.IsAny<int>(), It.IsAny<int>()))
-            .Returns<int, int>((startpos, spaces) => startpos + spaces);
+            .Returns<int, int>((startPosition, spaces) => startPosition + spaces);
         GameBoard = boardMock.Object;
     }
 
@@ -39,7 +39,7 @@ public class TokenTest
     [Test]
     public void Token_GameStarted_ReturnsSquare1()
     {
-        IToken token = new Token(0, GameBoard, AnimationLogger);
+        IToken token = new Token(0, GameBoard!, AnimationLogger);
         Assert.AreEqual(1, token.Position);
     }
 
@@ -53,7 +53,7 @@ public class TokenTest
     [Test]
     public void Token_Move_ReturnsSquare4()
     {
-        IToken token = new Token(0, GameBoard, AnimationLogger);
+        IToken token = new Token(0, GameBoard!, AnimationLogger);
         token.Move(3);
         Assert.AreEqual(4, token.Position);
     }
@@ -68,13 +68,13 @@ public class TokenTest
     [Test]
     public void Token_Moves_ReturnsSquare8()
     {
-        IToken token = new Token(0, GameBoard, AnimationLogger);
+        IToken token = new Token(0, GameBoard!, AnimationLogger);
         token.Move(3);
         token.Move(4);
         Assert.AreEqual(8, token.Position);
     }
-#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
-    public IAnimationLogger AnimationLogger { get; set; }
-    public IBoard GameBoard { get; set; }
-#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+
+    private IAnimationLogger? AnimationLogger { get; set; }
+    private IBoard? GameBoard { get; set; }
+
 }

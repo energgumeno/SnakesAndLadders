@@ -8,7 +8,7 @@ var playerCount = 2;
 
 
 //recomended dependency injection
-IAnimationLogger logger = new DefaultAnimationLogger();
+IAnimationLogger? logger = new DefaultAnimationLogger();
 ITileFactory tileFactory = new TileFactory();
 ITokenFactory tokenFactory = new TokenFactory();
 IPlayerFactory playerFactory = new PlayerFactory();
@@ -16,8 +16,6 @@ IBoard board = new Board(logger, tokenFactory, tileFactory);
 IPlayerManager playerManager = new PlayerManager(playerCount, DiceSixSided.Singleton, logger, playerFactory);
 
 IGame game = new GameSnakesAndLadders(
-    playerCount,
-    logger,
     playerManager,
     board
 );

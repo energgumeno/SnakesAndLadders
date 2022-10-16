@@ -4,10 +4,10 @@ namespace SnakesAndLaddersLibrary.Boards;
 
 public class Board : IBoard
 {
-    protected const int MaxTiles = 100;
+    private const int MaxTiles = 100;
 
 
-    public Board(IAnimationLogger animationLogger, ITokenFactory tokenFactory, ITileFactory tileFactory)
+    public Board(IAnimationLogger? animationLogger, ITokenFactory tokenFactory, ITileFactory tileFactory)
     {
         StartPosition = 1;
         Tiles = new ITile[MaxTiles];
@@ -17,10 +17,10 @@ public class Board : IBoard
         TileFactory = tileFactory;
     }
 
-    protected IAnimationLogger AnimationLogger { get; set; }
-    protected ITokenFactory TokenFactory { get; set; }
-    protected ITileFactory TileFactory { get; set; }
-    protected ITile[] Tiles { get; set; }
+    private IAnimationLogger? AnimationLogger { get; set; }
+    private ITokenFactory TokenFactory { get; set; }
+    private ITileFactory TileFactory { get; set; }
+    private ITile[] Tiles { get; set; }
 
     public int StartPosition { get; }
 
@@ -33,24 +33,24 @@ public class Board : IBoard
         }
     }
 
-    public int GetNextTokenPosition(int OldPosition, int spaces)
+    public int GetNextTokenPosition(int oldPosition, int spaces)
     {
-        if (CanMoveTokenToNextPosition(OldPosition, spaces))
-            return Tiles.ElementAt(OldPosition + spaces - 1).GetNextPosition();
-        return OldPosition;
+        if (CanMoveTokenToNextPosition(oldPosition, spaces))
+            return Tiles.ElementAt(oldPosition + spaces - 1).GetNextPosition();
+        return oldPosition;
     }
 
-    public bool CanMoveTokenToNextPosition(int OldPosition, int spaces)
+    public bool CanMoveTokenToNextPosition(int oldPosition, int spaces)
     {
-        return OldPosition + spaces <= MaxTiles;
+        return oldPosition + spaces <= MaxTiles;
     }
 
-    public bool IsTokenInLastPosition(int Position)
+    public bool IsTokenInLastPosition(int position)
     {
-        return Position == MaxTiles;
+        return position == MaxTiles;
     }
 
-    public IToken CreateToken(int playerId)
+    public IToken? CreateToken(int playerId)
     {
         return TokenFactory.CreateToken(playerId, this, AnimationLogger);
     }
@@ -59,7 +59,7 @@ public class Board : IBoard
 
     private async Task FillTilesAnimation(int tilePosition)
     {
-        await AnimationLogger.AnimationMessage(new Message
+        await AnimationLogger!.AnimationMessage(new Message
         {
             Sender = nameof(IBoard),
             Animation = nameof(FillTiles),

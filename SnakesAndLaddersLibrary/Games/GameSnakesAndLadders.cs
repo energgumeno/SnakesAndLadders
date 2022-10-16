@@ -1,12 +1,11 @@
-﻿using SnakesAndLaddersLibrary.AnimationMessage;
-using SnakesAndLaddersLibrary.Boards;
+﻿using SnakesAndLaddersLibrary.Boards;
 using SnakesAndLaddersLibrary.Players;
 
 namespace SnakesAndLaddersLibrary.Games;
 
 public class GameSnakesAndLadders : IGame
 {
-    public GameSnakesAndLadders(int playerCount, IAnimationLogger animationLogger, IPlayerManager playerManager,
+    public GameSnakesAndLadders(  IPlayerManager playerManager,
         IBoard gameBoard)
     {
         PlayerManager = playerManager;
@@ -14,10 +13,10 @@ public class GameSnakesAndLadders : IGame
         IsEndGame = false;
     }
 
-    protected IBoard GameBoard { get; set; }
-    protected IPlayerManager PlayerManager { get; set; }
+    private IBoard GameBoard { get; set; }
+    private IPlayerManager PlayerManager { get; set; }
 
-    protected bool IsEndGame { get; set; }
+    private bool IsEndGame { get; set; }
 
 
     public async Task StartGame()
@@ -29,16 +28,16 @@ public class GameSnakesAndLadders : IGame
 
     public async Task Play()
     {
-        while (!IsEndGame) await PlayOnemove();
+        while (!IsEndGame) await PlayOneMove();
 
-        await PlayerManager.GetPlayer().Gloat();
+        await PlayerManager.GetPlayer()!.Gloat();
     }
 
-    public async Task PlayOnemove()
+    public async Task PlayOneMove()
     {
         await PlayerManager.SetNextPlayer();
         var currentPlayer = PlayerManager.GetPlayer();
-        var spaces = await currentPlayer.RollDice();
+        var spaces = await currentPlayer!.RollDice();
         await currentPlayer.Move(spaces);
         CheckForWinner();
     }
@@ -50,6 +49,6 @@ public class GameSnakesAndLadders : IGame
 
     public bool CheckForWinner()
     {
-        return IsEndGame = GameBoard.IsTokenInLastPosition(PlayerManager.GetPlayer().PlayerToken.Position);
+        return IsEndGame = GameBoard.IsTokenInLastPosition(PlayerManager.GetPlayer()!.PlayerToken!.Position);
     }
 }

@@ -4,7 +4,7 @@ namespace SnakesAndLaddersLibrary.Boards;
 
 public class Token : IToken
 {
-    public Token(int tokenId, IBoard gameBoard, IAnimationLogger animationLogger)
+    public Token(int tokenId, IBoard gameBoard, IAnimationLogger? animationLogger)
     {
         TokenId = tokenId;
         Position = gameBoard.StartPosition;
@@ -12,9 +12,9 @@ public class Token : IToken
         AnimationLogger = animationLogger;
     }
 
-    protected IAnimationLogger AnimationLogger { get; set; }
+    private IAnimationLogger? AnimationLogger { get; set; }
     public int TokenId { get; protected set; }
-    public int Position { get; protected set; }
+    public int Position { get; private set; }
     public IBoard GameBoard { get; protected set; }
 
     public async Task Move(int spaces)
@@ -30,7 +30,7 @@ public class Token : IToken
 
     private async Task MoveAnimation(int oldPosition)
     {
-        await AnimationLogger.AnimationMessage(new Message
+        await AnimationLogger!.AnimationMessage(new Message
         {
             Sender = nameof(Token),
             Animation = nameof(Move),

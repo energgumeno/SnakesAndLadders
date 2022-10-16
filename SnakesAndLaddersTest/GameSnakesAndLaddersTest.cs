@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Moq;
 using NUnit.Framework;
 using SnakesAndLaddersLibrary.AnimationMessage;
@@ -22,16 +23,16 @@ public class GameSnakesAndLaddersTest
     [SetUp]
     public void Setup()
     {
-        var AnimationLoggerMock = new Mock<IAnimationLogger>();
-        AnimationLogger = AnimationLoggerMock.Object;
+        var animationLoggerMock = new Mock<IAnimationLogger>();
+        AnimationLogger = animationLoggerMock.Object;
 
         var theDiceMock = new Mock<IDice>();
         theDiceMock.Setup(d => d.Roll()).Returns(3);
         TheDice = theDiceMock.Object;
 
-        var BoardMock = new Mock<IBoard>();
-        BoardMock.Setup(d => d.IsTokenInLastPosition(It.IsAny<int>())).Returns<int>(position => position == 100);
-        Board = BoardMock.Object;
+        var boardMock = new Mock<IBoard>();
+        boardMock.Setup(d => d.IsTokenInLastPosition(It.IsAny<int>())).Returns<int>(position => position == 100);
+        Board = boardMock.Object;
     }
 
 
@@ -42,36 +43,32 @@ public class GameSnakesAndLaddersTest
     private (IPlayerManager, IPlayer) CreatePlayerTest(int rollResult)
     {
         var position = 97;
-        IToken PlayerToken;
-        IPlayer Player;
-        IPlayerManager PlayerManager;
-
 
         var playerTokenMock = new Mock<IToken>();
         playerTokenMock.Setup(d => d.Move(It.IsAny<int>())).Returns<int>(
-            rollResult =>
+            result =>
             {
-                if (position + rollResult <= 100) position += rollResult;
+                if (position + result <= 100) position += result;
                 return Task.FromResult(true);
             });
         playerTokenMock.Setup(d => d.Position).Returns(() => { return position; }
         );
 
-        PlayerToken = playerTokenMock.Object;
-        var PlayerMock = new Mock<IPlayer>();
-        PlayerMock.Setup(d => d.PlayerToken).Returns(PlayerToken);
-        PlayerMock.Setup(d => d.RollDice()).Returns(Task.FromResult(rollResult));
-        PlayerMock.Setup(d => d.Move(
+        var playerToken = playerTokenMock.Object;
+        var playerMock = new Mock<IPlayer>();
+        playerMock.Setup(d => d.PlayerToken).Returns(playerToken);
+        playerMock.Setup(d => d.RollDice()).Returns(Task.FromResult(rollResult));
+        playerMock.Setup(d => d.Move(
             It.IsAny<int>())).Returns<int>(roll =>
         {
             position += roll;
             return Task.FromResult(true);
         });
-        Player = PlayerMock.Object;
-        var PlayerManagerMock = new Mock<IPlayerManager>();
-        PlayerManagerMock.Setup(d => d.GetPlayer()).Returns(Player);
-        PlayerManager = PlayerManagerMock.Object;
-        return (PlayerManager, Player);
+        var player = playerMock.Object;
+        var playerManagerMock = new Mock<IPlayerManager>();
+        playerManagerMock.Setup(d => d.GetPlayer()).Returns(player);
+        var playerManager = playerManagerMock.Object;
+        return (playerManager, player);
     }
 
 
@@ -87,15 +84,15 @@ public class GameSnakesAndLaddersTest
     [Test]
     public async Task GameSnakesAndLadders_square97moved3_ReturnsWin()
     {
-        (var playerManager, var player) = CreatePlayerTest(3);
+        var (playerManager, player) = CreatePlayerTest(3);
 
 
-#pragma warning disable CS8604 // Possible null reference argument.
-        IGame test = new GameSnakesAndLadders(1, AnimationLogger, playerManager, Board);
-#pragma warning restore CS8604 // Possible null reference argument.
+
+        IGame test = new GameSnakesAndLadders(  playerManager, Board!);
+
 
         await test.StartGame();
-        await test.PlayOnemove();
+        await test.PlayOneMove();
 
         Assert.IsTrue(test.CheckForWinner());
         Assert.IsTrue(player == test.GetWinner());
@@ -111,15 +108,15 @@ public class GameSnakesAndLaddersTest
     [Test]
     public async Task GameSnakesAndLadders_square97moved3_ReturnsNoWin()
     {
-        (var playerManager, var player) = CreatePlayerTest(4);
+        var (playerManager, player) = CreatePlayerTest(4);
 
 
-#pragma warning disable CS8604 // Possible null reference argument.
-        IGame test = new GameSnakesAndLadders(1, AnimationLogger, playerManager, Board);
-#pragma warning restore CS8604 // Possible null reference argument.
+
+        IGame test = new GameSnakesAndLadders(playerManager, Board!);
+
 
         await test.StartGame();
-        await test.PlayOnemove();
+        await test.PlayOneMove();
 
         Assert.IsFalse(test.CheckForWinner());
         Assert.AreEqual(null, test.GetWinner());

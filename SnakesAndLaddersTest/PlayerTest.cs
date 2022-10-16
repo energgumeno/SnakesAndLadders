@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Moq;
 using NUnit.Framework;
 using SnakesAndLaddersLibrary.AnimationMessage;
@@ -14,27 +15,28 @@ public class PlayerTest
     [SetUp]
     public void Setup()
     {
-        position = 1;
+        _position = 1;
 
-        var playerTokenMock = new Mock<IToken>();
-        playerTokenMock.Setup(d => d.Move(It.IsAny<int>())).Returns<int>(
+        var playerTokenMock = new Mock<IToken?>();
+        playerTokenMock.Setup(token => token!.Move(It.IsAny<int>())).Returns<int>(
             d =>
             {
-                position += d;
+                _position += d;
                 return Task.FromResult(true);
             });
-        playerTokenMock.Setup(d => d.Position).Returns(() => { return position; });
+        playerTokenMock.Setup(token => token!.Position).Returns(() => { return _position; });
         PlayerToken = playerTokenMock.Object;
 
-        var theDiceMock = new Mock<IDice>();
-        theDiceMock.Setup(d => d.Roll()).Returns(4);
+        var theDiceMock = new Mock<IDice?>();
+        theDiceMock.Setup(dice => dice!.Roll()).Returns(4);
         TheDice = theDiceMock.Object;
 
-        var AnimationLoggerMock = new Mock<IAnimationLogger>();
-        AnimationLogger = AnimationLoggerMock.Object;
+        var animationLoggerMock = new Mock<IAnimationLogger?>();
+        
+        AnimationLogger = animationLoggerMock.Object;
     }
 
-    private int position = 1;
+    private int _position = 1;
     /*
         UAT2
         Given the player rolls a 4
@@ -47,14 +49,16 @@ public class PlayerTest
     {
         IPlayer player = new Player(1, PlayerToken, TheDice, AnimationLogger);
 
-        var oldPosition = player.PlayerToken.Position;
-        var spaces = await player.RollDice();
-        await player.Move(spaces);
-        Assert.AreEqual(spaces, player.PlayerToken.Position - oldPosition);
+
+            var oldPosition = player.PlayerToken!.Position;
+            var spaces = await player.RollDice();
+            await player.Move(spaces);
+            Assert.AreEqual(spaces, player.PlayerToken.Position - oldPosition);
+      
     }
-#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
-    protected IToken PlayerToken { get; set; }
-    protected IDice TheDice { get; set; }
-    protected IAnimationLogger AnimationLogger { get; set; }
-#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+
+    private IToken? PlayerToken { get; set; }
+    private IDice? TheDice { get; set; }
+    private IAnimationLogger? AnimationLogger { get; set; }
+
 }

@@ -4,9 +4,9 @@ public interface IBoard
 {
     int StartPosition { get; }
 
-    bool CanMoveTokenToNextPosition(int OldPosition, int spaces);
+    bool CanMoveTokenToNextPosition(int oldPosition, int spaces);
     Task FillTiles();
-    int GetNextTokenPosition(int OldPosition, int spaces);
-    bool IsTokenInLastPosition(int Position);
-    IToken CreateToken(int playerId);
+    int GetNextTokenPosition(int oldPosition, int spaces);
+    bool IsTokenInLastPosition(int position);
+    IToken? CreateToken(int playerId);
 }

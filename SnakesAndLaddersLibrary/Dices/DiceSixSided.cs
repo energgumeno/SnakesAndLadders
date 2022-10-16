@@ -8,5 +8,5 @@ public class DiceSixSided : Dice
     {
     }
 
-    public static DiceSixSided Singleton => _singleton ??= new DiceSixSided();
+    public static DiceSixSided? Singleton => _singleton ??= new DiceSixSided();
 }
