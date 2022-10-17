@@ -6,10 +6,13 @@ using SnakesAndLaddersLibrary.Players;
 
 var playerCount = 2;
 
+//use this to go move by move
+//IAnimationLogger? logger = new DefaultAnimationLoggerWithStop();
 
 //recomended dependency injection
+
 IAnimationLogger? logger = new DefaultAnimationLogger();
-ITileFactory tileFactory = new TileFactory();
+ITileFactory tileFactory = new SnakesAndLaddersTilesFactory();
 ITokenFactory tokenFactory = new TokenFactory();
 IPlayerFactory playerFactory = new PlayerFactory();
 IBoard board = new Board(logger, tokenFactory, tileFactory);
